@@ -1,10 +1,14 @@
 package com.play.ffmpeg;
 
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.TextureView;
 import android.view.View;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -17,29 +21,36 @@ import javax.microedition.khronos.opengles.GL10;
  * Description:
  */
 
-public class XPlayView extends GLSurfaceView implements SurfaceHolder.Callback, View.OnClickListener, GLSurfaceView.Renderer{
+//public class XPlayView extends GLSurfaceView implements SurfaceHolder.Callback, View.OnClickListener, GLSurfaceView.Renderer{
+public class XPlayView extends TextureView implements TextureView.SurfaceTextureListener, View.OnClickListener {
+    private Surface mSurface;
 
     public XPlayView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setSurfaceTextureListener(this);
         setOnClickListener(this);
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        InitView(holder.getSurface());
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            setRenderer(this);
-        }
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+        Log.e("XPlayView", "onSurfaceTextureAvailable");
+        mSurface = new Surface(surfaceTexture);
+        InitView(mSurface);
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
 
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+        mSurface = null;
+        return true;
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
     }
 
@@ -52,18 +63,4 @@ public class XPlayView extends GLSurfaceView implements SurfaceHolder.Callback, 
         playOnPause();
     }
 
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-
-    }
-
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-
-    }
-
-    @Override
-    public void onDrawFrame(GL10 gl) {
-
-    }
 }
