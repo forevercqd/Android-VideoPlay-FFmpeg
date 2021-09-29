@@ -20,6 +20,7 @@ public:
     virtual bool Open(const char *path);
     virtual bool Start();
     virtual void InitView(void *win);
+    virtual void makeCurrentSurface(bool flag);
     virtual void Close();
     virtual bool Seek(double pos);
 

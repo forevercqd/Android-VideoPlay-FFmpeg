@@ -2,7 +2,7 @@
 // Created by 叶亮 on 2019/2/12.
 //
 
-#include <GLES2/gl2.h>
+#include <GLES3/gl3.h>
 #include "XShader.h"
 #include "../Xlog.h"
 

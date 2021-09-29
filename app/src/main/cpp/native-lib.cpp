@@ -8,6 +8,7 @@
 #include "builder/FFPlayerBuilder.h"
 #include "IPlayerProxy.h"
 #include "Xlog.h"
+#include "opengl/XEGL.h"
 
 
 extern "C"
@@ -26,6 +27,7 @@ Java_com_play_ffmpeg_XPlayView_InitView(JNIEnv *env, jobject instance, jobject s
     //视频显示
     ANativeWindow *win = ANativeWindow_fromSurface(env, surface);
     IPlayerProxy::Get()->InitView(win);
+    XLOGE("%ld", std::this_thread::get_id());
 }
 
 //===================   打开播放地址   ===================
@@ -74,4 +76,10 @@ Java_com_play_ffmpeg_MainActivity_play(JNIEnv *env, jobject instance, jstring ur
     IPlayerProxy::Get()->Start();
 
     env->ReleaseStringUTFChars(url_, url);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_play_ffmpeg_MainActivity_change(JNIEnv *, jobject, jboolean) {
+    IPlayerProxy::Get()->makeCurrentSurface(true);
 }

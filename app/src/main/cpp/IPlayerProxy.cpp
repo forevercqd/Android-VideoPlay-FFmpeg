@@ -63,6 +63,16 @@ void IPlayerProxy::InitView(void *win)
     mux.unlock();
 }
 
+void IPlayerProxy::makeCurrentSurface(bool flag)
+{
+    mux.lock();
+    if(player)
+    {
+        player->makeCurrentSurface(flag);
+    }
+    mux.unlock();
+}
+
 double IPlayerProxy::PlayPos()
 {
     double pos = 0.0;

@@ -20,6 +20,7 @@ public:
     virtual bool Init(void *win, XTextureType type = XTEXTURE_YUV420P) = 0;
     virtual void Draw(unsigned char *data[], int width, int heigth) = 0;
     virtual void Drop() = 0;
+    virtual void makeCurrentSurface() = 0;
 
     virtual ~XTexture(){};
 

@@ -56,7 +56,7 @@ find_library(log-lib
               log )
 target_link_libraries(native-lib
                       OpenSLES EGL
-                      GLESv2
+                      GLESv3
                       OpenSLES
                       android
                       avcodec avformat avutil swscale swresample avfilter

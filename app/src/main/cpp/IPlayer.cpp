@@ -146,6 +146,14 @@ void IPlayer::InitView(void *win)
     }
 }
 
+void IPlayer::makeCurrentSurface(bool flag)
+{
+    if(videoView)
+    {
+        videoView->makeCurrentSurface(flag);
+    }
+}
+
 //获取当前的播放进度
 double  IPlayer::PlayPos(){
     double pos = 0.0;

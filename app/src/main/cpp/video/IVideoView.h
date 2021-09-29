@@ -14,5 +14,6 @@ public:
     virtual void Render(XData data) = 0;
     virtual void Update(XData data);
     virtual void Close() = 0;
+    virtual void makeCurrentSurface(bool flag) = 0;
 };
 #endif //VIDEOPLAY_IVIDEOVIEW_H

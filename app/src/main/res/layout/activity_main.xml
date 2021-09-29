@@ -15,6 +15,14 @@
         android:layout_alignParentBottom="true"
         android:text="播放" />
 
+    <Button
+        android:id="@+id/change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="160dp"
+        android:text="切换" />
+
     <SeekBar
         android:id="@+id/seek_progress"
         android:layout_width="match_parent"

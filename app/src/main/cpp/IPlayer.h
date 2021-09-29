@@ -19,6 +19,7 @@ public:
     virtual bool Open(const char *path);
     virtual bool Start();
     virtual void InitView(void *win);
+    virtual void makeCurrentSurface(bool);
     virtual void Close();
 
     //获取当前的播放进度

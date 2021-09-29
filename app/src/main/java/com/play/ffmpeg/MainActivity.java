@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
     private void initView() {
         findViewById(R.id.btn_play).setOnClickListener(this);
+        findViewById(R.id.change).setOnClickListener(this);
 
         mSeekBar = findViewById(R.id.seek_progress);
         mSeekBar.setOnSeekBarChangeListener(this);
@@ -115,19 +116,19 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     public native double getPlayPos();
 
     //滑动到
-    public native double seekTo(double pos);
+    public native void seekTo(double pos);
 
     //播放
     public native void play(String url);
 
+    public native void change(boolean flag);
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_play:
-                //play("rtmp://10.2.3.222:1935/live");
-                play("/storage/emulated/0/video.mp4");
-                break;
+        if (v.getId() == R.id.btn_play) {//play("rtmp://10.2.3.222:1935/live");
+            play("/sdcard/v1080.mp4");
+        } else if (v.getId() == R.id.change) {
+            change(true);
         }
     }
 

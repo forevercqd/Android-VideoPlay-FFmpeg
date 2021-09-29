@@ -61,7 +61,9 @@ public:
         mux.unlock();
     }
 
-
+    void makeCurrentSurface() override {
+        XEGL::Get()->makeCurrentSurface();
+    }
 };
 
 XTexture *XTexture::Create()

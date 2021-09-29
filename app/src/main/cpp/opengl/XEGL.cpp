@@ -2,6 +2,7 @@
 // Created by 叶亮 on 2019/2/12.
 //
 #include <EGL/egl.h>
+#include <EGL/eglext.h>
 #include <mutex>
 #include "XEGL.h"
 #include "../Xlog.h"
@@ -12,6 +13,9 @@ public:
     EGLDisplay display = EGL_NO_DISPLAY;
     EGLSurface surface = EGL_NO_SURFACE;
     EGLContext context = EGL_NO_CONTEXT;
+    EGLConfig config = 0;
+    ANativeWindow *nwin = nullptr;
+    bool change = false;
     std::mutex mux;
 
     virtual void Draw()
@@ -53,7 +57,7 @@ public:
     virtual bool Init(void *win)
     {
 
-        ANativeWindow *nwin = (ANativeWindow *)win;
+        nwin = (ANativeWindow *)win;
         Close();
         mux.lock();
         //初始化EGL
@@ -84,14 +88,13 @@ public:
                 EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
                 EGL_NONE
         };
-        EGLConfig config = 0;
         EGLint numConfig = 0;
         if(EGL_TRUE != eglChooseConfig(display, configSpec, &config, 1, &numConfig)){
             mux.unlock();
             XLOGE("eglChooseConfig failed!");
             return false;
         }
-        surface = eglCreateWindowSurface(display, config, nwin, NULL);
+        surface = eglCreateWindowSurface(display, config, nwin, nullptr);
 
         //4创建并打开EGL上下文
         const EGLint ctxAttr[] = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE};
@@ -112,6 +115,32 @@ public:
 
         XLOGE("eglMakeCurrent success!");
         mux.unlock();
+        return true;
+    }
+
+    void releaseSurface() {
+        if (surface != EGL_NO_SURFACE) {
+            eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, context);
+            eglDestroySurface(display, surface);
+            surface = EGL_NO_SURFACE;
+        }
+    }
+
+    bool makeCurrentSurface() override {
+        std::lock_guard<std::mutex> lck(mux);
+        releaseSurface();
+        EGLint hdrRender[] = {
+                EGL_GL_COLORSPACE_KHR,
+                EGL_GL_COLORSPACE_BT2020_PQ_EXT,
+                EGL_NONE
+        };
+        change = !change;
+        surface = eglCreateWindowSurface(display, config, nwin, change ? hdrRender : nullptr);
+        if(EGL_TRUE != eglMakeCurrent(display, surface, surface, context)){
+            XLOGE("eglMakeCurrent failed!");
+            return false;
+        }
+        XLOGE("eglMakeCurrent success!");
         return true;
     }
 };

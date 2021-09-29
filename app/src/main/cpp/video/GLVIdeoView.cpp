@@ -32,5 +32,12 @@ void GLVideoView::Render(XData data)
         txt->Init(view, (XTextureType)data.format);
     }
 
+    fmux.lock();
+    if (flag) {
+        txt->makeCurrentSurface();
+        flag = false;
+    }
+    fmux.unlock();
+
     txt->Draw(data.datas, data.width, data.height);
 }
