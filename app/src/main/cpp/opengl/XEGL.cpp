@@ -89,6 +89,8 @@ public:
                 EGL_NONE
         };
         EGLint numConfig = 0;
+
+        XLOGE("cqd.hdr, init use common egl config!");
         if(EGL_TRUE != eglChooseConfig(display, configSpec, &config, 1, &numConfig)){
             mux.unlock();
             XLOGE("eglChooseConfig failed!");
@@ -136,6 +138,15 @@ public:
         };
         change = !change;
         surface = eglCreateWindowSurface(display, config, nwin, change ? hdrRender : nullptr);
+
+        EGLint *pCurRendConfig = change ? hdrRender : nullptr;
+        if(pCurRendConfig){
+            XLOGE("cqd.hdr, eglMakeCurrent pCurRendConfig[1] %d.", pCurRendConfig[1]);
+        }else{
+            XLOGE("cqd.hdr, eglMakeCurrent pCurRendConfig[1] == nullptr");
+        }
+
+
         if(EGL_TRUE != eglMakeCurrent(display, surface, surface, context)){
             XLOGE("eglMakeCurrent failed!");
             return false;

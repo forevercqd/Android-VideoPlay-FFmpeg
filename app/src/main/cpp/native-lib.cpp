@@ -81,5 +81,5 @@ Java_com_play_ffmpeg_MainActivity_play(JNIEnv *env, jobject instance, jstring ur
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_play_ffmpeg_MainActivity_change(JNIEnv *, jobject, jboolean) {
-    IPlayerProxy::Get()->makeCurrentSurface(true);
+    IPlayerProxy::Get()->makeCurrentSurface(true);      // cqd.hdr.1 点击切换按钮，只是执行此处;
 }
